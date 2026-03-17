@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SK Thunder – Vaš sportski klub za atletiku, košarku, tenis i plivanje. Pridružite se našoj zajednici sportaša!">
+  <title>SK Thunder – Sportski Klub</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --crvena: #E63946;
+      --crvena-tamna: #C1121F;
+      --zlatna: #FFD60A;
+      --tamna: #0D0D0D;
+      --tamna-2: #1A1A1A;
+      --tamna-3: #242424;
+      --siva: #888;
+      --bijela: #ffffff;
+      --font-naslov: 'Barlow Condensed', sans-serif;
+      --font-tijelo: 'Barlow', sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--font-tijelo); background: var(--tamna); color: var(--bijela); line-height: 1.6; overflow-x: hidden; }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* NAV */
+    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(13,13,13,0.97); backdrop-filter: blur(12px); border-bottom: 2px solid var(--crvena); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 70px; transition: var(--transition); }
+    .navbar.scrolled { height: 60px; box-shadow: 0 4px 20px rgba(230,57,70,0.3); }
+    .nav-logo { display: flex; align-items: center; gap: .75rem; }
+    .nav-logo img { height: 45px; width: auto; }
+    .nav-links { display: flex; gap: 0; align-items: center; }
+    .nav-links a { font-family: var(--font-naslov); font-size: .95rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--bijela); padding: .5rem 1.2rem; position: relative; transition: var(--transition); }
+    .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 50%; right: 50%; height: 2px; background: var(--crvena); transition: var(--transition); }
+    .nav-links a:hover { color: var(--zlatna); }
+    .nav-links a:hover::after { left: 0; right: 0; }
+    .nav-links a.active { color: var(--crvena); }
+    .nav-cta { background: var(--crvena) !important; color: var(--bijela) !important; padding: .5rem 1.5rem !important; clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); font-weight: 700 !important; }
+    .nav-cta:hover { background: var(--zlatna) !important; color: var(--tamna) !important; }
+    .nav-cta::after { display: none !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; background: none; border: none; }
+    .hamburger span { display: block; width: 26px; height: 2px; background: var(--bijela); transition: var(--transition); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: var(--tamna); padding-top: 70px; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(230,57,70,.15) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 80% 20%, rgba(255,214,10,.08) 0%, transparent 60%), linear-gradient(180deg, #0D0D0D 0%, #1A0507 50%, #0D0D0D 100%); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(230,57,70,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(230,57,70,.07) 1px, transparent 1px); background-size: 60px 60px; animation: gridMove 20s linear infinite; }
+    @keyframes gridMove { 0% { transform: translateY(0); } 100% { transform: translateY(60px); } }
+    .hero-content { position: relative; z-index: 2; text-align: center; max-width: 900px; padding: 2rem; }
+    .hero-overtitle { font-family: var(--font-naslov); font-size: .9rem; letter-spacing: 6px; text-transform: uppercase; color: var(--zlatna); margin-bottom: 1rem; animation: fadeInUp .8s ease both; }
+    .hero-title { font-family: var(--font-naslov); font-size: clamp(4rem,12vw,9rem); font-weight: 900; line-height: .9; text-transform: uppercase; color: var(--bijela); animation: fadeInUp .8s ease .2s both; }
+    .hero-title span { color: var(--crvena); display: block; text-shadow: 0 0 40px rgba(230,57,70,.5); }
+    .hero-subtitle { font-size: 1.2rem; color: var(--siva); margin: 1.5rem auto; max-width: 500px; animation: fadeInUp .8s ease .4s both; }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeInUp .8s ease .6s both; }
+    .hero-stats { display: flex; gap: 3rem; justify-content: center; margin-top: 4rem; animation: fadeInUp .8s ease .8s both; flex-wrap: wrap; }
+    .stat-item { text-align: center; }
+    .stat-number { font-family: var(--font-naslov); font-size: 3rem; font-weight: 900; color: var(--crvena); line-height: 1; }
+    .stat-label { font-size: .8rem; letter-spacing: 3px; text-transform: uppercase; color: var(--siva); margin-top: .25rem; }
+    .scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .5rem; color: var(--siva); font-size: .75rem; letter-spacing: 3px; text-transform: uppercase; animation: bounce 2s infinite; }
+    .scroll-indicator::after { content: ''; width: 1px; height: 40px; background: linear-gradient(to bottom, var(--crvena), transparent); }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+
+    /* BUTTONS */
+    .btn { display: inline-block; font-family: var(--font-naslov); font-size: .95rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: .85rem 2.5rem; cursor: pointer; transition: var(--transition); border: none; clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); }
+    .btn-primary { background: var(--crvena); color: var(--bijela); }
+    .btn-primary:hover { background: var(--crvena-tamna); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(230,57,70,.4); }
+    .btn-outline { background: transparent; color: var(--bijela); border: 2px solid rgba(255,255,255,.3); clip-path: none; }
+    .btn-outline:hover { border-color: var(--zlatna); color: var(--zlatna); transform: translateY(-2px); }
+
+    /* SECTIONS */
+    .section { padding: 6rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-tag { display: inline-block; font-family: var(--font-naslov); font-size: .8rem; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--crvena); border: 1px solid var(--crvena); padding: .3rem 1rem; margin-bottom: 1rem; }
+    .section-title { font-family: var(--font-naslov); font-size: clamp(2.5rem,5vw,4rem); font-weight: 900; text-transform: uppercase; line-height: 1; color: var(--bijela); }
+    .section-title em { font-style: normal; color: var(--crvena); }
+    .section-desc { font-size: 1.1rem; color: var(--siva); max-width: 600px; margin: 1rem auto 0; }
+    .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(230,57,70,.4), transparent); }
+
+    /* O KLUBU */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-image-wrap { position: relative; }
+    .about-image-wrap img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border: 1px solid rgba(230,57,70,.3); }
+    .about-image-placeholder { width: 100%; aspect-ratio: 4/3; background: linear-gradient(135deg, var(--tamna-3) 0%, #2a0810 100%); border: 1px solid rgba(230,57,70,.3); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--siva); font-size: .85rem; letter-spacing: 2px; text-transform: uppercase; gap: .5rem; }
+    .about-image-placeholder::before { content: '📸'; font-size: 3rem; }
+    .about-image-wrap::after { content: ''; position: absolute; bottom: -15px; right: -15px; width: 80%; height: 80%; border: 2px solid var(--crvena); z-index: -1; }
+    .about-year-badge { position: absolute; top: -20px; left: -20px; width: 80px; height: 80px; background: var(--crvena); display: flex; flex-direction: column; align-items: center; justify-content: center; clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); z-index: 2; }
+    .about-year-badge .year { font-family: var(--font-naslov); font-size: 1.5rem; font-weight: 900; line-height: 1; }
+    .about-year-badge .since { font-size: .6rem; letter-spacing: 2px; }
+    .about-text h2 { font-family: var(--font-naslov); font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1.5rem; line-height: 1; }
+    .about-text h2 span { color: var(--crvena); }
+    .about-text p { color: #bbb; margin-bottom: 1rem; }
+    .about-text p a { color: var(--crvena); text-decoration: underline; text-underline-offset: 3px; }
+    .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .feature-item { display: flex; align-items: flex-start; gap: .75rem; }
+    .feature-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .feature-text strong { display: block; font-family: var(--font-naslov); font-size: 1rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .feature-text span { font-size: .85rem; color: var(--siva); }
+
+    /* SPORTOVI */
+    .sports-section { background: var(--tamna-2); }
+    .sports-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .sport-card { background: var(--tamna-3); border: 1px solid rgba(255,255,255,.07); overflow: hidden; transition: var(--transition); position: relative; }
+    .sport-card:hover { border-color: var(--crvena); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(230,57,70,.2); }
+    .sport-card-image { width: 100%; height: 200px; background: linear-gradient(135deg, #1a0507 0%, #0d0d0d 100%); display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; overflow: hidden; }
+    .sport-card-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .sport-card-image::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(transparent, var(--tamna-3)); }
+    .sport-card-body { padding: 1.5rem; }
+    .sport-card-body h3 { font-family: var(--font-naslov); font-size: 1.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: .5rem; }
+    .sport-card-body p { color: var(--siva); font-size: .9rem; margin-bottom: 1rem; }
+    .sport-card-body p a { color: var(--zlatna); text-decoration: underline; text-underline-offset: 3px; }
+    .sport-meta { display: flex; gap: 1rem; font-size: .8rem; color: var(--siva); flex-wrap: wrap; }
+    .sport-badge { position: absolute; top: 1rem; right: 1rem; background: var(--crvena); color: var(--bijela); font-family: var(--font-naslov); font-size: .7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: .25rem .75rem; clip-path: polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%); }
+
+    /* VIDEO */
+    .video-section { background: #0a0a0a; position: relative; overflow: hidden; }
+    .video-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(230,57,70,.1) 0%, transparent 70%); pointer-events: none; }
+    .video-wrapper { position: relative; max-width: 900px; margin: 0 auto; }
+    .video-frame { width: 100%; aspect-ratio: 16/9; border: 2px solid rgba(230,57,70,.3); display: block; }
+
+    /* TRENERI */
+    .coaches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+    .coach-card { background: var(--tamna-2); border: 1px solid rgba(255,255,255,.07); padding: 2rem; text-align: center; transition: var(--transition); position: relative; overflow: hidden; }
+    .coach-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--crvena), var(--zlatna)); transform: scaleX(0); transition: var(--transition); }
+    .coach-card:hover::before { transform: scaleX(1); }
+    .coach-card:hover { border-color: rgba(230,57,70,.3); transform: translateY(-5px); }
+    .coach-avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--crvena-tamna), var(--tamna-3)); border: 3px solid rgba(230,57,70,.4); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; overflow: hidden; }
+    .coach-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .coach-name { font-family: var(--font-naslov); font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin-bottom: .25rem; }
+    .coach-role { color: var(--crvena); font-size: .8rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 1rem; }
+    .coach-bio { color: var(--siva); font-size: .9rem; line-height: 1.6; }
+
+    /* RASPORED */
+    .schedule-section { background: var(--tamna-2); }
+    .schedule-table-wrap { overflow-x: auto; border: 1px solid rgba(230,57,70,.2); }
+    .schedule-table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    .schedule-table thead { background: var(--crvena); font-family: var(--font-naslov); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .schedule-table th { padding: 1rem 1.5rem; text-align: left; }
+    .schedule-table td { padding: 1rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,.07); color: #bbb; }
+    .schedule-table tr:hover td { background: rgba(230,57,70,.07); }
+    .schedule-table td:first-child { font-family: var(--font-naslov); font-size: 1.1rem; font-weight: 700; color: var(--bijela); text-transform: uppercase; }
+    .schedule-sport-tag { display: inline-block; padding: .2rem .6rem; font-size: .75rem; font-family: var(--font-naslov); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .tag-atletika { background: rgba(230,57,70,.2); color: var(--crvena); }
+    .tag-kosarka { background: rgba(255,214,10,.15); color: var(--zlatna); }
+    .tag-tenis { background: rgba(52,211,153,.15); color: #34d399; }
+    .tag-plivanje { background: rgba(96,165,250,.15); color: #60a5fa; }
+
+    /* KARUSEL */
+    .carousel-wrapper { position: relative; overflow: hidden; }
+    .carousel-track { display: flex; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+    .carousel-slide { min-width: 100%; }
+    .carousel-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+    .carousel-btn { width: 44px; height: 44px; background: rgba(230,57,70,.15); border: 1px solid var(--crvena); color: var(--bijela); font-size: 1.2rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+    .carousel-btn:hover { background: var(--crvena); }
+    .carousel-dots { display: flex; gap: .5rem; }
+    .carousel-dot { width: 8px; height: 8px; background: rgba(255,255,255,.2); cursor: pointer; transition: var(--transition); }
+    .carousel-dot.active { background: var(--crvena); width: 24px; }
+
+    /* KONTAKT */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .contact-info h3 { font-family: var(--font-naslov); font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 2rem; }
+    .contact-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start; }
+    .contact-icon { width: 44px; height: 44px; background: rgba(230,57,70,.15); border: 1px solid rgba(230,57,70,.3); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .contact-item-text strong { display: block; font-family: var(--font-naslov); font-size: .85rem; letter-spacing: 2px; text-transform: uppercase; color: var(--crvena); margin-bottom: .2rem; }
+    .contact-item-text span { color: #bbb; font-size: .95rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-family: var(--font-naslov); font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--siva); margin-bottom: .5rem; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: var(--tamna-2); border: 1px solid rgba(255,255,255,.15); color: var(--bijela); padding: .85rem 1rem; font-family: var(--font-tijelo); font-size: .95rem; transition: var(--transition); outline: none; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--crvena); box-shadow: 0 0 0 3px rgba(230,57,70,.15); }
+    .form-group select { cursor: pointer; appearance: none; }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .social-links { display: flex; gap: 1rem; }
+    .social-link { width: 36px; height: 36px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: var(--transition); color: var(--siva) !important; }
+    .social-link:hover { background: var(--crvena); border-color: var(--crvena); color: var(--bijela) !important; }
+
+    /* MAPA */
+    .map-section { background: var(--tamna-2); }
+    .map-container { border: 2px solid rgba(230,57,70,.2); overflow: hidden; height: 400px; }
+    .map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(80%) invert(90%) hue-rotate(180deg); }
+
+    /* FOOTER */
+    .footer { background: #080808; border-top: 2px solid var(--crvena); padding: 4rem 2rem 2rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; }
+    .footer-brand p { color: var(--siva); font-size: .9rem; margin-top: 1rem; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 { font-family: var(--font-naslov); font-size: .9rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--crvena); margin-bottom: 1.5rem; }
+    .footer-col ul li { margin-bottom: .75rem; }
+    .footer-col ul li a { color: var(--siva); font-size: .9rem; transition: var(--transition); display: flex; align-items: center; gap: .5rem; }
+    .footer-col ul li a:hover { color: var(--bijela); padding-left: 5px; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.07); padding-top: 2rem; margin-top: 3rem; max-width: 1200px; margin: 3rem auto 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-bottom p { color: var(--siva); font-size: .85rem; }
+
+    /* ANIMACIJE */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .reveal { opacity: 1; transform: none; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { position: fixed; top: 70px; left: 0; right: 0; background: rgba(13,13,13,0.98); flex-direction: column; padding: 2rem; gap: .5rem; transform: translateY(-100%); opacity: 0; pointer-events: none; transition: var(--transition); border-bottom: 2px solid var(--crvena); }
+      .nav-links.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+      .nav-links a { padding: .75rem 1rem; width: 100%; }
+      .nav-cta { clip-path: none !important; }
+      .hamburger { display: flex; }
+      .hero-stats { gap: 1.5rem; }
+      .stat-number { font-size: 2rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .coaches-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .about-features { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .coaches-grid { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .sports-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Glavna navigacija">
+    <a href="index.html" class="nav-logo" aria-label="SK Thunder - Početna">
+      <img src="logo.svg" alt="SK Thunder logo" width="160" height="64">
+    </a>
+    <ul class="nav-links" role="menubar">
+      <li role="none"><a href="#o-klubu" role="menuitem">O Klubu</a></li>
+      <li role="none"><a href="#sportovi" role="menuitem">Sportovi</a></li>
+      <li role="none"><a href="#treneri" role="menuitem">Treneri</a></li>
+      <li role="none"><a href="#raspored" role="menuitem">Raspored</a></li>
+      <li role="none"><a href="novosti.html" role="menuitem">Novosti</a></li>
+      <li role="none"><a href="#kontakt" role="menuitem" class="nav-cta">Učlani se</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Otvori izbornik" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <section class="hero" id="pocetna" aria-label="Dobrodošlica">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="hero-overtitle">⚡ Osnovan 1998. · Rijeka, Hrvatska</p>
+      <h1 class="hero-title">SK<br><span>Thunder</span></h1>
+      <p class="hero-subtitle">Više od sporta — zajednica koja te podiže, potiče i čini najboljom verzijom tebe.</p>
+      <div class="hero-buttons">
+        <a href="#sportovi" class="btn btn-primary">Naši Sportovi</a>
+        <a href="#kontakt" class="btn btn-outline">Učlani se</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">450+</div>
+          <div class="stat-label">Aktivnih članova</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Sportskih sekcija</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">26</div>
+          <div class="stat-label">Godina tradicije</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">120+</div>
+          <div class="stat-label">Osvojenih medalja</div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">Skrolaj</div>
+  </section>
+
+  <section class="section" id="o-klubu" aria-labelledby="o-klubu-naslov">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image-wrap">
+          <div class="about-year-badge"><span class="since">od</span><span class="year">1998</span></div>
+          <img src="o-klubu.jpg" alt="Sportaši SK Thunder kluba na treningu" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="about-image-placeholder" style="display:none;">Fotografija kluba<br><small>Ubaci: images/o-klubu.jpg</small></div>
+        </div>
+        <div class="about-text" data-delay="200">
+          <h2 id="o-klubu-naslov">Naša <span>priča</span></h2>
+          <p>SK Thunder osnovan je 1998. godine u Rijeci s jednim ciljem — stvoriti sportski klub koji nije samo mjesto za trening, već pravi dom za sve koji vole sport. Kroz dvije i pol dekade izgradili smo zajednicu od preko 450 aktivnih članova svih uzrasta.</p>
+          <p>Naši <a href="#treneri">licencirani treneri</a> vode sportaše od rekreativnih početnika do natjecatelja na državnoj razini. Vjerujemo da svako dijete, svaki tinejdžer i svaki odrasli zaslužuje prilike za tjelesni i osobni razvoj kroz sport.</p>
+          <p>Pogledajte naš <a href="novosti.html">najnoviji raspored natjecanja</a> ili se odmah <a href="#kontakt">učlanite</a> — prve dvije probe su besplatne!</p>
+          <div class="about-features">
+            <div class="feature-item"><div class="feature-icon">🏟️</div><div class="feature-text"><strong>Moderni objekti</strong><span>Atletska staza, dvorana i bazen</span></div></div>
+            <div class="feature-item"><div class="feature-icon">🏅</div><div class="feature-text"><strong>Dokazani rezultati</strong><span>120+ osvojenih medalja</span></div></div>
+            <div class="feature-item"><div class="feature-icon">👨‍👩‍👧</div><div class="feature-text"><strong>Za sve uzraste</strong><span>Od 5 do 75+ godina</span></div></div>
+            <div class="feature-item"><div class="feature-icon">🤝</div><div class="feature-text"><strong>Zajednica</strong><span>Timski duh i podrška</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <section class="section sports-section" id="sportovi" aria-labelledby="sportovi-naslov">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Što nudimo</div>
+        <h2 class="section-title" id="sportovi-naslov">Naše <em>sekcije</em></h2>
+        <p class="section-desc">Četiri sportske sekcije, jedan tim. Pronađi sport koji te inspira.</p>
+      </div>
+      <div class="sports-grid">
+        <article class="sport-card reveal" data-delay="0">
+          <div class="sport-card-image">
+            <img src="atletika.jpg" alt="Atletičar SK Thunder kluba na stazi" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none;">🏃</span>
+            <span class="sport-badge">Otvoreno</span>
+          </div>
+          <div class="sport-card-body">
+            <h3>Atletika</h3>
+            <p>Naša atletska sekcija postoji od osnutka kluba i ponos je SK Thundera. Treniramo sprinte, srednje pruge, skok u dalj i bacanja. Više o nastupima pročitaj u <a href="novosti.html">novostima</a>.</p>
+            <div class="sport-meta"><span>👥 85 sportaša</span><span>📅 Pon / Sri / Pet</span><span>🕐 17:00 – 19:00</span></div>
+          </div>
+        </article>
+        <article class="sport-card reveal" data-delay="100">
+          <div class="sport-card-image">
+            <img src="kosarka.jpg" alt="Košarkaška utakmica SK Thunder" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none;">🏀</span>
+            <span class="sport-badge">Popularna</span>
+          </div>
+          <div class="sport-card-body">
+            <h3>Košarka</h3>
+            <p>Mlađe uzraste vodimo od podstawnih tehnika do taktike na terenu. Seniorska ekipa nastupa u <a href="novosti.html#rezultati">županijskoj ligi</a> i redovito postiže odlične rezultate.</p>
+            <div class="sport-meta"><span>👥 120 sportaša</span><span>📅 Uto / Čet / Sub</span><span>🕐 18:00 – 20:00</span></div>
+          </div>
+        </article>
+        <article class="sport-card reveal" data-delay="200">
+          <div class="sport-card-image">
+            <img src="tenis.jpg" alt="Tenisač na terenu SK Thunder" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none;">🎾</span>
+          </div>
+          <div class="sport-card-body">
+            <h3>Tenis</h3>
+            <p>Šest teniska terena, od kojih su dva pokrivena za igranje tijekom cijele godine. Nudimo individualne i grupne satove za sve razine — od <a href="#kontakt">početnika do naprednih</a>.</p>
+            <div class="sport-meta"><span>👥 95 sportaša</span><span>📅 Svaki dan</span><span>🕐 09:00 – 21:00</span></div>
+          </div>
+        </article>
+        <article class="sport-card reveal" data-delay="300">
+          <div class="sport-card-image">
+            <img src="plivanje.jpg" alt="Plivač u bazenu SK Thunder" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span style="display:none;">🏊</span>
+          </div>
+          <div class="sport-card-body">
+            <h3>Plivanje</h3>
+            <p>Olimpijski bazen s 8 staza dostupan je za trening sedam dana u tjednu. Škola plivanja za djecu od 3 godine — sigurno, stručno i zabavno okruženje.</p>
+            <div class="sport-meta"><span>👥 150 sportaša</span><span>📅 Svakodnevno</span><span>🕐 06:30 – 22:00</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <section class="section video-section" id="video" aria-labelledby="video-naslov">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Promotivni video</div>
+        <h2 class="section-title" id="video-naslov">Osjeti <em>energiju</em></h2>
+        <p class="section-desc">Pogledaj što znači biti dio SK Thunder zajednice.</p>
+      </div>
+      <div class="video-wrapper reveal">
+        <video class="video-frame" controls poster="images/video-thumbnail.jpg">
+          <source src="promo.mp4" type="video/mp4">
+          Vaš preglednik ne podržava HTML5 video.
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <section class="section" id="treneri" aria-labelledby="treneri-naslov">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Stručni tim</div>
+        <h2 class="section-title" id="treneri-naslov">Naši <em>treneri</em></h2>
+        <p class="section-desc">Iskusni, licencirani treneri posvećeni tvom razvoju.</p>
+      </div>
+      <div class="coaches-grid">
+        <article class="coach-card reveal" data-delay="0">
+          <div class="coach-avatar"><img src="trener-marko.jpg" alt="Marko Horvat" onerror="this.style.display='none';"><span>👨</span></div>
+          <h3 class="coach-name">Marko Horvat</h3>
+          <p class="coach-role">Atletika – Glavni trener</p>
+          <p class="coach-bio">Bivši državni prvak u sprintu s 15 godina trenerskog iskustva. Licencirani trener A kategorije Hrvatskog atletskog saveza. Pod njegovim vodstvom klub je ostvario 40 državnih medalja.</p>
+        </article>
+        <article class="coach-card reveal" data-delay="100">
+          <div class="coach-avatar"><img src="trener-ana.jpg" alt="Ana Kovač" onerror="this.style.display='none';"><span>👩</span></div>
+          <h3 class="coach-name">Ana Kovač</h3>
+          <p class="coach-role">Košarka – Seniorska ekipa</p>
+          <p class="coach-bio">Bivša profesionalna košarkašica s 10 godina igranja u prvoj hrvatskoj ligi. Trenersku karijeru gradi u SK Thunder od 2015. godine, a njezina ekipa osvajač je regionalnog kupа 2023.</p>
+        </article>
+        <article class="coach-card reveal" data-delay="200">
+          <div class="coach-avatar"><img src="trener-ivan.jpg" alt="Ivan Petrić" onerror="this.style.display='none';"><span>👨</span></div>
+          <h3 class="coach-name">Ivan Petrić</h3>
+          <p class="coach-role">Tenis – Head Coach</p>
+          <p class="coach-bio">Diplomiran na Kineziološkom fakultetu, s licencom Tennis Europe za rad s djecom. Specijalist za razvoj tehničkih vještina i mentalne pripreme mladih tenisača od 2010. godine.</p>
+        </article>
+        <article class="coach-card reveal" data-delay="300">
+          <div class="coach-avatar"><img src="trener-maja.jpg" alt="Maja Blažević" onerror="this.style.display='none';"><span>👩</span></div>
+          <h3 class="coach-name">Maja Blažević</h3>
+          <p class="coach-role">Plivanje – Voditeljica sekcije</p>
+          <p class="coach-bio">Magistrica kineziologije, specijalizacija plivanje. Osmislila je program "Mala riba" za djecu 3–6 godina koji je postao uzor u cijeloj regiji. Trenerka godine 2022.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <section class="section schedule-section" id="raspored" aria-labelledby="raspored-naslov">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Tjedni plan</div>
+        <h2 class="section-title" id="raspored-naslov">Raspored <em>treninga</em></h2>
+        <p class="section-desc">Pronađi termin koji ti odgovara. Svaki dan je nova prilika.</p>
+      </div>
+      <div class="schedule-table-wrap">
+        <table class="schedule-table" role="table" aria-label="Tjedni raspored treninga">
+          <thead>
+            <tr>
+              <th scope="col">Dan</th><th scope="col">Sport</th><th scope="col">Skupina</th>
+              <th scope="col">Vrijeme</th><th scope="col">Trener</th><th scope="col">Lokacija</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Ponedjeljak</td><td><span class="schedule-sport-tag tag-atletika">Atletika</span></td><td>Kadeti / Juniori</td><td>17:00 – 19:00</td><td>M. Horvat</td><td>Atletska staza</td></tr>
+            <tr><td>Ponedjeljak</td><td><span class="schedule-sport-tag tag-plivanje">Plivanje</span></td><td>Škola plivanja</td><td>09:00 – 10:30</td><td>M. Blažević</td><td>Bazen</td></tr>
+            <tr><td>Utorak</td><td><span class="schedule-sport-tag tag-kosarka">Košarka</span></td><td>Seniori</td><td>18:00 – 20:00</td><td>A. Kovač</td><td>Dvorana A</td></tr>
+            <tr><td>Utorak</td><td><span class="schedule-sport-tag tag-tenis">Tenis</span></td><td>Početnici</td><td>16:00 – 17:30</td><td>I. Petrić</td><td>Teren 1–3</td></tr>
+            <tr><td>Srijeda</td><td><span class="schedule-sport-tag tag-atletika">Atletika</span></td><td>Veterani / Rekreativci</td><td>19:00 – 20:30</td><td>M. Horvat</td><td>Atletska staza</td></tr>
+            <tr><td>Četvrtak</td><td><span class="schedule-sport-tag tag-kosarka">Košarka</span></td><td>Mlađi kadeti</td><td>17:00 – 18:30</td><td>A. Kovač</td><td>Dvorana B</td></tr>
+            <tr><td>Petak</td><td><span class="schedule-sport-tag tag-tenis">Tenis</span></td><td>Napredni</td><td>17:00 – 19:00</td><td>I. Petrić</td><td>Teren 1–6</td></tr>
+            <tr><td>Subota</td><td><span class="schedule-sport-tag tag-plivanje">Plivanje</span></td><td>Natjecatelji</td><td>08:00 – 10:00</td><td>M. Blažević</td><td>Bazen</td></tr>
+            <tr><td>Subota</td><td><span class="schedule-sport-tag tag-kosarka">Košarka</span></td><td>Seniori – utakmica</td><td>16:00 – 18:00</td><td>A. Kovač</td><td>Dvorana A</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="text-align:center; color:var(--siva); font-size:0.9rem; margin-top:1.5rem;" class="">
+        ℹ️ Raspored se može mijenjati. Provjeri <a href="novosti.html" style="color:var(--crvena);">najnovije obavijesti</a> ili nas <a href="#kontakt" style="color:var(--crvena);">kontaktiraj</a> za detalje.
+      </p>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <section class="section" id="galerija" aria-labelledby="galerija-naslov">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Galerija</div>
+        <h2 class="section-title" id="galerija-naslov">Naši <em>momenti</em></h2>
+        <p class="section-desc">Pogledaj što se događa u SK Thunder zajednici.</p>
+      </div>
+      <div class="carousel-wrapper">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <div style="background:linear-gradient(135deg,#1a0507,#0d0d0d); height:400px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem; overflow:hidden; position:relative;">
+              <img src="galerija-1.jpg" alt="Atletičari SK Thunder na natjecanju" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;color:#888;position:relative;z-index:2;">
+                <span style="font-size:5rem;">🏆</span>
+                <p style="letter-spacing:3px;text-transform:uppercase;font-family:var(--font-naslov);">Natjecanje 2024</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <div style="height:400px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem; overflow:hidden; position:relative; background:linear-gradient(135deg,#0d1a0d,#0d0d0d);">
+              <img src="galerija-2.jpg" alt="Trening košarke u dvorani" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;color:#888;position:relative;z-index:2;">
+                <span style="font-size:5rem;">🏀</span>
+                <p style="letter-spacing:3px;text-transform:uppercase;font-family:var(--font-naslov);">Trening košarke</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <div style="height:400px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem; overflow:hidden; position:relative; background:linear-gradient(135deg,#0d0d1a,#0d0d0d);">
+              <img src="galerija-3.jpg" alt="Škola plivanja" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:1rem;color:#888;position:relative;z-index:2;">
+                <span style="font-size:5rem;">🏊</span>
+                <p style="letter-spacing:3px;text-transform:uppercase;font-family:var(--font-naslov);">Škola plivanja</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn prev" aria-label="Prethodna slika">&#8592;</button>
+          <div class="carousel-dots" role="tablist" aria-label="Galerija slika"></div>
+          <button class="carousel-btn next" aria-label="Sljedeća slika">&#8594;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <section class="section" id="kontakt" aria-labelledby="kontakt-naslov">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Učlani se</div>
+        <h2 class="section-title" id="kontakt-naslov">Pridruži se <em>timu</em></h2>
+        <p class="section-desc">Prve dvije probe su besplatne. Kontaktiraj nas ili ispuni obrazac.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Kontakt informacije</h3>
+          <div class="contact-item"><div class="contact-icon">📍</div><div class="contact-item-text"><strong>Adresa</strong><span>Sportska ulica 12, 51000 Rijeka</span></div></div>
+          <div class="contact-item"><div class="contact-icon">📞</div><div class="contact-item-text"><strong>Telefon</strong><span><a href="tel:+38551234567" style="color:#bbb;">+385 51 234 567</a></span></div></div>
+          <div class="contact-item"><div class="contact-icon">✉️</div><div class="contact-item-text"><strong>E-mail</strong><span><a href="/cdn-cgi/l/email-protection#0b62656d644b7860267f637e656f6e79256379" style="color:#bbb;"><span class="__cf_email__" data-cfemail="01686f676e41726a2c7569746f6564732f6973">[email&#160;protected]</span></a></span></div></div>
+          <div class="contact-item"><div class="contact-icon">🕐</div><div class="contact-item-text"><strong>Radno vrijeme ureda</strong><span>Pon – Pet: 09:00 – 18:00<br>Sub: 09:00 – 13:00</span></div></div>
+          <div class="social-links" style="margin-top:2rem;">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">📷</a>
+            <a href="#" class="social-link" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+        <div class="contact-form" data-delay="200">
+          <form action="#" method="POST" novalidate>
+            <div class="form-row">
+              <div class="form-group"><label for="ime">Ime</label><input type="text" id="ime" name="ime" placeholder="Tvoje ime" required></div>
+              <div class="form-group"><label for="prezime">Prezime</label><input type="text" id="prezime" name="prezime" placeholder="Tvoje prezime" required></div>
+            </div>
+            <div class="form-group"><label for="email">E-mail adresa</label><input type="email" id="email" name="email" placeholder="ime@primjer.hr" required></div>
+            <div class="form-group"><label for="telefon">Telefon (opcionalno)</label><input type="tel" id="telefon" name="telefon" placeholder="+385 ..."></div>
+            <div class="form-group">
+              <label for="sport">Sport koji te zanima</label>
+              <select id="sport" name="sport" required>
+                <option value="" disabled selected>Odaberi sport</option>
+                <option value="atletika">Atletika</option>
+                <option value="kosarka">Košarka</option>
+                <option value="tenis">Tenis</option>
+                <option value="plivanje">Plivanje</option>
+                <option value="ostalo">Ostalo / Informacije</option>
+              </select>
+            </div>
+            <div class="form-group"><label for="poruka">Poruka</label><textarea id="poruka" name="poruka" placeholder="Napiši nam nešto o sebi ili postavi pitanje..."></textarea></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Pošalji upit ➤</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-section" aria-label="Karta lokacije">
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d45206.18!2d14.4425!3d45.3271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4764a172b3a61f07%3A0x400ad50862422d0!2sRijeka!5e0!3m2!1shr!2shr!4v1610000000000!5m2!1shr!2shr" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lokacija SK Thunder u Rijeci"></iframe>
+    </div>
+  </section>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="logo.svg" alt="SK Thunder logo" width="160" height="64">
+        <p>SK Thunder – sportski klub iz Rijeke s tradicijom od 1998. godine. Gradimo bolje sportaše i bolje ljude.</p>
+      </div>
+      <div class="footer-col"><h4>Navigacija</h4><ul><li><a href="#o-klubu">O klubu</a></li><li><a href="#sportovi">Sportovi</a></li><li><a href="#treneri">Treneri</a></li><li><a href="#raspored">Raspored</a></li><li><a href="novosti.html">Novosti</a></li></ul></div>
+      <div class="footer-col"><h4>Sportovi</h4><ul><li><a href="#sportovi">🏃 Atletika</a></li><li><a href="#sportovi">🏀 Košarka</a></li><li><a href="#sportovi">🎾 Tenis</a></li><li><a href="#sportovi">🏊 Plivanje</a></li></ul></div>
+      <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="/cdn-cgi/l/email-protection#21484f474e61524a0c5549544f4544530f4953">✉️ <span class="__cf_email__" data-cfemail="61080f070e21120a4c1509140f0504134f0913">[email&#160;protected]</span></a></li><li><a href="tel:+38551234567">📞 +385 51 234 567</a></li><li><a href="#">📍 Sportska ul. 12, Rijeka</a></li><li><a href="#kontakt">📝 Upiši se online</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 SK Thunder, Rijeka. Sva prava pridržana.</p>
+      <div class="social-links">
+        <a href="#" class="social-link" aria-label="Facebook">f</a>
+        <a href="#" class="social-link" aria-label="Instagram">📷</a>
+        <a href="#" class="social-link" aria-label="YouTube">▶</a>
+      </div>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const navbar = document.querySelector('.navbar');
+      window.addEventListener('scroll', function () {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+      });
+
+      const hamburger = document.querySelector('.hamburger');
+      const navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function () {
+          hamburger.classList.toggle('open');
+          navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            hamburger.classList.remove('open');
+            navLinks.classList.remove('open');
+          });
+        });
+      }
+
+      // Karusel
+      var caroTrack = document.querySelector('.carousel-track');
+      var caroSlides = document.querySelectorAll('.carousel-slide');
+      var caroCurrent = 0;
+      var caroTotal = caroSlides.length;
+      var dotsContainer = document.querySelector('.carousel-dots');
+
+      if (caroTotal > 0 && dotsContainer) {
+        for (var i = 0; i < caroTotal; i++) {
+          var dot = document.createElement('div');
+          dot.className = i === 0 ? 'carousel-dot active' : 'carousel-dot';
+          dot.setAttribute('data-index', i);
+          dot.onclick = function() { caroGoTo(parseInt(this.getAttribute('data-index'))); };
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      function caroGoTo(index) {
+        caroCurrent = (index + caroTotal) % caroTotal;
+        if (caroTrack) caroTrack.style.transform = 'translateX(-' + (caroCurrent * 100) + '%)';
+        if (dotsContainer) {
+          var dots = dotsContainer.querySelectorAll('.carousel-dot');
+          for (var d = 0; d < dots.length; d++) {
+            dots[d].classList.toggle('active', d === caroCurrent);
+          }
+        }
+      }
+
+      var prevBtn = document.querySelector('.carousel-btn.prev');
+      var nextBtn = document.querySelector('.carousel-btn.next');
+      if (prevBtn) prevBtn.onclick = function() { caroGoTo(caroCurrent - 1); };
+      if (nextBtn) nextBtn.onclick = function() { caroGoTo(caroCurrent + 1); };
+      setInterval(function() { caroGoTo(caroCurrent + 1); }, 5000);
+
+      const form = document.querySelector('.contact-form form');
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const btn = form.querySelector('[type="submit"]');
+          const orig = btn.textContent;
+          btn.textContent = '✓ Poruka poslana!';
+          btn.style.background = '#22c55e';
+          setTimeout(() => { btn.textContent = orig; btn.style.background = ''; form.reset(); }, 3000);
+        });
+      }
+
+      // Counter animacija uklonjena - vrijednosti su hardkodirane u HTML
+
+      document.querySelectorAll('a
